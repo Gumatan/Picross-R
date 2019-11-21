@@ -1,0 +1,40 @@
+nav {
+	display: flex;
+	align-items: center;
+	height: 80px;
+	background-color: #9930fc;
+}
+
+nav>.logo {
+	height: 70px;
+	margin-left: 7px;
+	border-radius: 200px 200px 200px 200px;
+}
+
+nav>h1 {
+	justify-self: flex-start;
+	margin-left: 10px;
+}
+
+nav>.reactLogo {
+	height: 18px;
+	margin-left: 3px;
+}
+nav>.login {
+	margin-left : auto ;
+	margin-right: 22px;
+}
+nav>.login>button {
+
+	margin-left: 15px;
+	text-align: center;
+	text-decoration: none;
+
+	border: solid white 1px;
+	border-radius: 3px;
+
+	padding: 0.5em 1em;
+
+	color: #ffffff;
+	background-color: #CF95FC;
+}
