@@ -66,6 +66,9 @@ class Tile extends React.Component {
         tyleStyle = {
           background: "white url(/cross.png) center no-repeat"
         };
+        break;
+      default:
+        break;
     }
     return (
       <div
