@@ -1,85 +1,71 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Tile.scss";
 
-class Tile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { status: "empty" };
-  }
+const Tile = props => {
+  const [status, statusUpdate] = useState("empty");
 
-  changeStatusStart = event => {
+  const changeStatusStart = event => {
     event.preventDefault();
-    this.props.changeStatusStart(this.state.status);
-    if (this.state.status === "empty") {
+    props.changeStatusStart(status);
+    if (status === "empty") {
       if (event.buttons === 1) {
-        this.setState({ status: "full" });
+        statusUpdate("full");
       } else if (event.buttons === 2) {
-        this.setState({ status: "flaged" });
+        statusUpdate("flaged");
       }
-    } else if (this.state.status === "full") {
+    } else if (status === "full") {
       if (event.buttons === 1) {
-        this.setState({ status: "empty" });
+        statusUpdate("empty");
       }
     } else if (event.buttons === 2) {
-      this.setState({ status: "empty" });
+      statusUpdate("empty");
     }
   };
 
-  changeStatus = event => {
+  const changeStatus = event => {
     event.preventDefault();
-    if (
-      this.state.status === "empty" &&
-      this.props.dragStartStatus === "empty"
-    ) {
+    if (status === "empty" && props.dragStartStatus === "empty") {
       if (event.buttons === 1) {
-        this.setState({ status: "full" });
+        statusUpdate("full");
       } else if (event.buttons === 2) {
-        this.setState({ status: "flaged" });
+        statusUpdate("flaged");
       }
-    } else if (
-      this.state.status === "full" &&
-      this.props.dragStartStatus === "full"
-    ) {
+    } else if (status === "full" && props.dragStartStatus === "full") {
       if (event.buttons === 1) {
-        this.setState({ status: "empty" });
+        statusUpdate("empty");
       }
-    } else if (
-      this.state.status === "flaged" &&
-      this.props.dragStartStatus === "flaged"
-    ) {
+    } else if (status === "flaged" && props.dragStartStatus === "flaged") {
       if (event.buttons === 2) {
-        this.setState({ status: "empty" });
+        statusUpdate("empty");
       }
     }
   };
 
-  render() {
-    let tyleStyle;
-    switch (this.state.status) {
-      case "empty":
-        tyleStyle = { backgroundColor: "white" };
-        break;
-      case "full":
-        tyleStyle = { backgroundColor: "#00cbff" };
-        break;
-      case "flaged":
-        tyleStyle = {
-          background: "white url(/cross.png) center no-repeat"
-        };
-        break;
-      default:
-        break;
-    }
-    return (
-      <div
-        className="Tile"
-        identifier={this.props.key}
-        onMouseOver={this.changeStatus}
-        onMouseDown={this.changeStatusStart}
-        style={tyleStyle}
-      ></div>
-    );
+  let tyleStyle;
+  switch (status) {
+    case "empty":
+      tyleStyle = { backgroundColor: "white" };
+      break;
+    case "full":
+      tyleStyle = { backgroundColor: "#00cbff" };
+      break;
+    case "flaged":
+      tyleStyle = {
+        background: "white url(/cross.png) center no-repeat"
+      };
+      break;
+    default:
+      break;
   }
-}
+  return (
+    <div
+      className="Tile"
+      identifier={props.key}
+      onMouseOver={changeStatus}
+      onMouseDown={changeStatusStart}
+      style={tyleStyle}
+    ></div>
+  );
+};
 
 export default Tile;

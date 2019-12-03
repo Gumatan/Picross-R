@@ -1,8 +1,10 @@
 nav {
+  position: sticky;
   display: flex;
   align-items: center;
   height: 80px;
-  background-color: #9930fc;
+
+  background-color: #753ea4;
   .logo {
     height: 70px;
     margin-left: 7px;
@@ -12,6 +14,7 @@ nav {
     font-size: 1.3em;
     justify-self: flex-start;
     margin-left: 10px;
+    color: white;
   }
   .reactLogo {
     height: 17px;
@@ -24,12 +27,9 @@ nav {
       margin-left: 15px;
       text-align: center;
       text-decoration: none;
-
       border: solid white 1px;
       border-radius: 3px;
-
       padding: 0.5em 1em;
-
       color: #ffffff;
       background-color: #cf95fc;
     }
