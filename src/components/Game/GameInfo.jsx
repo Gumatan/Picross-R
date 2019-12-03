@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./GameInfo.scss";
 
 const GameInfo = () => {
   const [time, updateTime] = useState(null);

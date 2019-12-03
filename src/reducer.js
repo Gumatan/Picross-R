@@ -1,5 +1,5 @@
 const initialState = {
-  tilesStatus: {
+  tilesState: {
     tile1: "empty",
     tile2: "empty",
     tile3: "empty",
@@ -107,15 +107,13 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "FILL_TILE":
       const tileKey = action.key;
-      const { tilesStatus } = state;
-      tilesStatus[`tile${tileKey}`] = "full";
+      const { tileStates } = state;
+      tileStates[`tile${tileKey}`] = "full";
 
       return {
         ...state,
-        tilesStatus
+        tilesState
       };
-    default:
-      break;
   }
 };
 

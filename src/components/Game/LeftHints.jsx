@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./LeftHints.scss";
 
 const LeftHints = props => {
   const [leftHints, leftHintsUpdate] = useState(null);

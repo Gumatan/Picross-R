@@ -16,30 +16,51 @@ $TileSize: 24px;
   border-radius: 5px;
   font-family: "Orbitron", sans-serif;
   .GameInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     height: $TileSize * 4;
     width: $TileSize * 4;
   }
+
   .TopHints {
+    display: flex;
+    flex-flow: row wrap;
     width: $TileSize * 10;
     height: $TileSize * 4;
     margin: 0 auto;
     & > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
       height: $TileSize * 4;
       width: $TileSize;
       & > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         height: $TileSize;
         width: $TileSize;
       }
     }
   }
   .LeftHints {
+    display: flex;
+    flex-flow: column;
     width: $TileSize * 4;
     height: $TileSize * 10;
     margin: auto 0;
     & > div {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
       height: $TileSize;
       width: $TileSize * 4;
       & > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         height: $TileSize;
         width: $TileSize;
       }

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./Tile.scss";
 
 const Tile = props => {
   const [status, statusUpdate] = useState("empty");
