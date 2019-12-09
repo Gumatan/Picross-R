@@ -1,35 +1,29 @@
-import React from "react";
-import "./LeftHints.scss";
+import React, { useState, useEffect } from "react";
 
-class LeftHints extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      leftHints: null
-    };
-  }
+const LeftHints = props => {
+  const [leftHints, leftHintsUpdate] = useState(null);
 
-  determineHints() {
-    let leftHints = new Array(this.props.gameWidth)
+  const determineHints = () => {
+    let leftHints = new Array(props.gameWidth)
       .fill(0)
-      .map(() => new Array(Math.ceil(this.props.gameHeight / 2)).fill(0)); //Custom double entry array to the size of the game
+      .map(() => new Array(Math.ceil(props.gameHeight / 2)).fill(0)); //Custom double entry array to the size of the game
     let currentHintIndex;
     let currentValue;
 
-    for (let i = 0; i < this.props.gameHeight; i++) {
+    for (let i = 0; i < props.gameHeight; i++) {
       //For each row
       currentHintIndex = 0;
       currentValue = 1;
 
-      for (let j = 0; j < this.props.gameWidth; j++) {
+      for (let j = 0; j < props.gameWidth; j++) {
         //For each cell in row
 
-        if (this.props.solutionTab[i][j] === 1) {
+        if (props.solutionTab[i][j] === 1) {
           //If current Cell == 1
           leftHints[i][currentHintIndex] = currentValue; //Increment related Hint
           currentValue += 1; //^
 
-          if (this.props.solutionTab[i][j + 1] === 0) {
+          if (props.solutionTab[i][j + 1] === 0) {
             //If next cell in row is equal to 0
 
             currentHintIndex += 1; //Start a new hint for the row
@@ -39,27 +33,25 @@ class LeftHints extends React.Component {
       }
     }
     leftHints = leftHints.map(item => item.filter(values => values !== 0)); //removing 0's in hints
-    this.setState({ leftHints: leftHints });
-  }
+    leftHintsUpdate(leftHints);
+  };
 
-  componentDidMount() {
-    this.determineHints();
-  }
+  useEffect(() => {
+    determineHints();
+  }, []);
 
-  render() {
-    return (
-      <div className="LeftHints">
-        {this.state.leftHints &&
-          this.state.leftHints.map(e => (
-            <div>
-              {e.map(n => (
-                <div>{n}</div>
-              ))}
-            </div>
-          ))}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="LeftHints">
+      {leftHints &&
+        leftHints.map(e => (
+          <div>
+            {e.map(n => (
+              <div>{n}</div>
+            ))}
+          </div>
+        ))}
+    </div>
+  );
+};
 
 export default LeftHints;

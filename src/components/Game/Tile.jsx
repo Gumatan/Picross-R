@@ -1,85 +1,71 @@
 import React from "react";
-import "./Tile.scss";
+import { useSelector, useDispatch } from "react-redux";
 
-class Tile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { status: "empty" };
-  }
-
-  changeStatusStart = event => {
+const Tile = ({ sendFirstStatusChange, dragStartStatus, id }) => {
+  const status = useSelector(state => state.tilesState[id]);
+  const dispatch = useDispatch();
+  const changeStatusStart = event => {
     event.preventDefault();
-    this.props.changeStatusStart(this.state.status);
-    if (this.state.status === "empty") {
+    sendFirstStatusChange(status);
+    if (status === 0) {
       if (event.buttons === 1) {
-        this.setState({ status: "full" });
+        dispatch({ type: "UPDATE_TILE", newState: 1, id });
       } else if (event.buttons === 2) {
-        this.setState({ status: "flaged" });
+        dispatch({ type: "UPDATE_TILE", newState: 2, id });
       }
-    } else if (this.state.status === "full") {
+    } else if (status === 1) {
       if (event.buttons === 1) {
-        this.setState({ status: "empty" });
+        dispatch({ type: "UPDATE_TILE", newState: 0, id });
       }
     } else if (event.buttons === 2) {
-      this.setState({ status: "empty" });
+      dispatch({ type: "UPDATE_TILE", newState: 0, id });
     }
   };
 
-  changeStatus = event => {
+  const changeStatus = event => {
     event.preventDefault();
-    if (
-      this.state.status === "empty" &&
-      this.props.dragStartStatus === "empty"
-    ) {
+    if (status === 0 && dragStartStatus === 0) {
       if (event.buttons === 1) {
-        this.setState({ status: "full" });
+        dispatch({ type: "UPDATE_TILE", newState: 1, id });
       } else if (event.buttons === 2) {
-        this.setState({ status: "flaged" });
+        dispatch({ type: "UPDATE_TILE", newState: 2, id });
       }
-    } else if (
-      this.state.status === "full" &&
-      this.props.dragStartStatus === "full"
-    ) {
+    } else if (status === 1 && dragStartStatus === 1) {
       if (event.buttons === 1) {
-        this.setState({ status: "empty" });
+        dispatch({ type: "UPDATE_TILE", newState: 0, id });
       }
-    } else if (
-      this.state.status === "flaged" &&
-      this.props.dragStartStatus === "flaged"
-    ) {
+    } else if (status === 2 && dragStartStatus === 2) {
       if (event.buttons === 2) {
-        this.setState({ status: "empty" });
+        dispatch({ type: "UPDATE_TILE", newState: 0, id });
       }
     }
   };
 
-  render() {
-    let tyleStyle;
-    switch (this.state.status) {
-      case "empty":
-        tyleStyle = { backgroundColor: "white" };
-        break;
-      case "full":
-        tyleStyle = { backgroundColor: "#00cbff" };
-        break;
-      case "flaged":
-        tyleStyle = {
-          background: "white url(/cross.png) center no-repeat"
-        };
-        break;
-      default:
-        break;
-    }
-    return (
-      <div
-        className="Tile"
-        identifier={this.props.key}
-        onMouseOver={this.changeStatus}
-        onMouseDown={this.changeStatusStart}
-        style={tyleStyle}
-      ></div>
-    );
+  let tyleStyle;
+  switch (status) {
+    case 0:
+      tyleStyle = { backgroundColor: "white" };
+      break;
+    case 1:
+      tyleStyle = { backgroundColor: "#00cbff" };
+      break;
+    case 2:
+      tyleStyle = {
+        background: "white url(/cross.png) center no-repeat"
+      };
+      break;
+    default:
+      break;
   }
-}
+  return (
+    <div
+      className="Tile"
+      identifier={id}
+      onMouseOver={changeStatus}
+      onMouseDown={changeStatusStart}
+      style={tyleStyle}
+    ></div>
+  );
+};
 
 export default Tile;

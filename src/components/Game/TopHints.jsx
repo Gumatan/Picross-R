@@ -1,5 +1,4 @@
 import React from "react";
-import "./TopHints.scss";
 
 class TopHints extends React.Component {
   constructor(props) {
