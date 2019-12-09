@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const GameInfo = () => {
+const GameInfo = ({ name }) => {
   const [time, updateTime] = useState(null);
   const [gameStarted, gameStartedUpdate] = useState(false);
   let startDate;
@@ -20,11 +20,12 @@ const GameInfo = () => {
   };
 
   useEffect(() => {
-    return clearInterval(getTime);
+    return () => clearInterval(getTime);
   }, [getTime]);
 
   return (
     <div className="GameInfo">
+      <p>{name}</p>
       <p>{gameStarted && time ? `${time.min} : ${time.sec}` : "0 : 0"}</p>
       <button onClick={gameStarted ? () => alert("dab") : startGame}>
         {gameStarted ? "Attempt" : "Start !"}

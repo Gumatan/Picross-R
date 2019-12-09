@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import "./Game.scss";
 import GameInfo from "./GameInfo";
 import LeftHints from "./LeftHints";
@@ -6,12 +7,13 @@ import puzzle from "./puzzle";
 import Tile from "./Tile";
 import TopHints from "./TopHints";
 
-const Game = props => {
+const Game = ({ currentPuzzleData }) => {
   const [dragStartStatus, dragStartStatusUpdate] = useState("empty");
+  const { solutionTab, name } = currentPuzzleData;
   const gameHeight = puzzle.size.y;
   const gameWidth = puzzle.size.x;
 
-  const changeStatusStart = firstChange => {
+  const handleFirstStatusChange = firstChange => {
     dragStartStatusUpdate(firstChange);
   };
   const preventDefault = e => {
@@ -24,7 +26,7 @@ const Game = props => {
       onDragStart={preventDefault}
       onDrop={preventDefault}
     >
-      <GameInfo />
+      <GameInfo name={name} />
       <TopHints
         gameHeight={gameHeight}
         gameWidth={gameWidth}
@@ -36,11 +38,12 @@ const Game = props => {
         solutionTab={puzzle.solutionTab}
       />
       <div className="TileField">
-        {puzzle.solutionTab.map((e, i) =>
+        {solutionTab.map((e, i) =>
           e.map((e, j) => (
             <Tile
-              key={[i, j]}
-              changeStatusStart={changeStatusStart}
+              key={i * 10 + j}
+              id={i * 10 + j}
+              sendFirstStatusChange={handleFirstStatusChange}
               dragStartStatus={dragStartStatus}
             />
           ))
@@ -50,4 +53,10 @@ const Game = props => {
   );
 };
 
-export default Game;
+const mapStateToProps = state => {
+  return {
+    currentPuzzleData: state.currentPuzzleData
+  };
+};
+
+export default connect(mapStateToProps)(Game);
