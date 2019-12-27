@@ -2,6 +2,7 @@ const bdd = require("./conf");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const port = 4000;
 
 app.use(
@@ -10,6 +11,7 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+app.use(cors());
 
 app.get("/puzzles", (req, res) => {
   bdd.query("select * from puzzle", (err, results) => {
@@ -24,7 +26,6 @@ app.get("/puzzles", (req, res) => {
 
 app.post("/puzzles", (req, res) => {
   const formData = req.body;
-  console.log(formData);
   bdd.query("insert into puzzle SET ?", formData, err => {
     if (err) {
       res.status(500).send(err);
