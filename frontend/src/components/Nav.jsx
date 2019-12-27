@@ -9,8 +9,8 @@ const Nav = () => (
       <h1>Picross-R</h1>
       <img className="reactLogo" src="/reactLogo.png" alt="React logo" />
     </Link>
-
-    <div className="login">
+    <div className="rightSide">
+      <Link to="/Create">Ajouter un Puzzle</Link>
       <button>Inscription</button>
       <button>Connection</button>
     </div>

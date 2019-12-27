@@ -26,7 +26,7 @@ const Game = ({ currentPuzzleData }) => {
       onDragStart={preventDefault}
       onDrop={preventDefault}
     >
-      <GameInfo name={name} />
+      <GameInfo name={name} solutionString={solutionTab} />
       <TopHints
         gameHeight={gameHeight}
         gameWidth={gameWidth}
