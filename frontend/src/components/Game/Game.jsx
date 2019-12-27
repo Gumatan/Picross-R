@@ -19,8 +19,8 @@ const Game = () => {
   };
   const preventDefault = e => {
     e.preventDefault();
-  };
-
+  }
+  
   useEffect(() => {
     return () => {
       dispatch({ type: "RESET_TILES_STATUS" });
@@ -63,3 +63,4 @@ const Game = () => {
 };
 
 export default Game;
+
