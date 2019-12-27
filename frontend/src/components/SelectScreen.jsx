@@ -1,52 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Card from "./Card";
 import "./SelectScreen.scss";
 
 const SelectScreen = () => {
-  const BDD = [
-    {
-      id: 1,
-      name: "Saucisson",
-      creator: "Gum",
-      height: 10,
-      width: 10,
-      solutionString:
-        "0000111000000101000000010100000010001000001001100001111101000110111100111111111110001000101001010010"
-    },
-    {
-      id: 1,
-      name: "Redux",
-      creator: "Gum",
-      height: 10,
-      width: 10,
-      solutionString:
-        "0000111000000101000000010100000010001000001001100001111101000110111100111111111110001000101001010010"
-    },
-    {
-      id: 1,
-      name: "React",
-      creator: "Gum",
-      height: 10,
-      width: 10,
-      solutionString:
-        "0000111000000101000000010100000010001000001001100001111101000110111100111111111110001000101001010010"
-    },
-    {
-      id: 1,
-      name: "JavaScript",
-      creator: "Gum",
-      height: 10,
-      width: 10,
-      solutionString:
-        "0000111000000101000000010100000010001000001001100001111101000110111100111111111110001000101001010010"
-    }
-  ];
-
+  const [BDD, setBDD] = useState(null);
+  useEffect(() => {
+    axios
+      .get("http://localhost:4000/puzzles")
+      .then(res => {
+        console.log(res);
+        setBDD(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
   return (
     <div className="SelectScreen">
-      {BDD.map(e => (
-        <Card puzzleData={e} />
-      ))}
+      {BDD && BDD.map(e => <Card puzzleData={e} />)}
     </div>
   );
 };
