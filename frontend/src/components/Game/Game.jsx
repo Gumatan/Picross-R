@@ -1,24 +1,34 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import "./Game.scss";
 import GameInfo from "./GameInfo";
 import LeftHints from "./LeftHints";
-import puzzle from "./puzzle";
 import Tile from "./Tile";
 import TopHints from "./TopHints";
 
-const Game = ({ currentPuzzleData }) => {
-  const [dragStartStatus, dragStartStatusUpdate] = useState("empty");
-  const { solutionTab, name } = currentPuzzleData;
-  const gameHeight = puzzle.size.y;
-  const gameWidth = puzzle.size.x;
+const Game = () => {
+  const dispatch = useDispatch();
+  const currentPuzzleData = useSelector(state => state.currentPuzzleData);
+  const [dragStartStatus, dragStartStatusUpdate] = useState("0");
+  const { solutionString, name, height, width } = currentPuzzleData;
+  const gameHeight = height;
+  const gameWidth = width;
 
   const handleFirstStatusChange = firstChange => {
     dragStartStatusUpdate(firstChange);
   };
   const preventDefault = e => {
     e.preventDefault();
-  };
+  }
+  
+  useEffect(() => {
+    return () => {
+      dispatch({ type: "RESET_TILES_STATUS" });
+    };
+  });
+
+  const map = Array.prototype.map;
+
   return (
     <div
       className="Game"
@@ -26,37 +36,31 @@ const Game = ({ currentPuzzleData }) => {
       onDragStart={preventDefault}
       onDrop={preventDefault}
     >
-      <GameInfo name={name} solutionString={solutionTab} />
+      <GameInfo name={name} />
       <TopHints
         gameHeight={gameHeight}
         gameWidth={gameWidth}
-        solutionTab={puzzle.solutionTab}
+        solutionString={solutionString}
       />
       <LeftHints
         gameHeight={gameHeight}
         gameWidth={gameWidth}
-        solutionTab={puzzle.solutionTab}
+        solutionString={solutionString}
       />
       <div className="TileField">
-        {solutionTab.map((e, i) =>
-          e.map((e, j) => (
+        {solutionString &&
+          map.call(solutionString, (e, i) => (
             <Tile
-              key={i * 10 + j}
-              id={i * 10 + j}
+              key={i}
+              id={i}
               sendFirstStatusChange={handleFirstStatusChange}
               dragStartStatus={dragStartStatus}
             />
-          ))
-        )}
+          ))}
       </div>
     </div>
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    currentPuzzleData: state.currentPuzzleData
-  };
-};
+export default Game;
 
-export default connect(mapStateToProps)(Game);
