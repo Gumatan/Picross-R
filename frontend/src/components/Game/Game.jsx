@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import "./Game.scss";
+import "../style/Game.scss";
 import GameInfo from "./GameInfo";
 import LeftHints from "./LeftHints";
 import Tile from "./Tile";
@@ -19,13 +19,13 @@ const Game = () => {
   };
   const preventDefault = e => {
     e.preventDefault();
-  }
-  
+  };
+
   useEffect(() => {
     return () => {
       dispatch({ type: "RESET_TILES_STATUS" });
     };
-  });
+  }, []);
 
   const map = Array.prototype.map;
 
@@ -63,4 +63,3 @@ const Game = () => {
 };
 
 export default Game;
-

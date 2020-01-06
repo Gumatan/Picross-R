@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Card from "./Card";
-import "./SelectScreen.scss";
+import "./style/SelectScreen.scss";
 
 const SelectScreen = () => {
   const [BDD, setBDD] = useState(null);
   useEffect(() => {
     axios
-      .get("http://localhost:4000/puzzles")
+      .get("http://localhost:5000/puzzles")
       .then(res => {
         console.log(res);
         setBDD(res.data);
