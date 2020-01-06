@@ -1,9 +1,8 @@
-const bdd = require("./conf");
 const express = require("express");
 const app = express();
+const { backendPort, bdd } = require("./conf");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const port = 4000;
 
 app.use(
   bodyParser.urlencoded({
@@ -35,10 +34,10 @@ app.post("/puzzles", (req, res) => {
   });
 });
 
-app.listen(port, err => {
+app.listen(backendPort, err => {
   if (err) {
     throw new Error("Something bad happened...");
   } else {
-    console.log("server running on port " + port);
+    console.log("server running on port " + backendPort);
   }
 });
