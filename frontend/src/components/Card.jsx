@@ -6,14 +6,16 @@ import Preview from "./Preview";
 const Card = ({ puzzleData }) => {
   const dispatch = useDispatch();
   const completedPuzzles = useSelector(state => state.completedPuzzles);
+  const pendingAnims = useSelector(state => state.pendingAnims);
   const [playAnim, playAnimUpdate] = useState(false);
   const { id, name, creator, solutionString } = puzzleData;
 
   useEffect(() => {
-    if (!playAnim && completedPuzzles[completedPuzzles.length - 1] === id) {
+    if (!playAnim && pendingAnims.includes(id)) {
       playAnimUpdate(true);
       setTimeout(() => {
         playAnimUpdate(false);
+        dispatch({ type: "PLAYED_ANIM", id });
       }, 3000);
     }
   }, [completedPuzzles]);

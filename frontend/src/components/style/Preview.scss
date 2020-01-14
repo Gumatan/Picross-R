@@ -1,13 +1,13 @@
 .Preview {
-  height: 188px;
-  width: 188px;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-flow: row wrap;
-  border: 1% solid rgb(105, 105, 105);
   border-radius: 5px;
   div {
     width: 10%;
-    height: 10%c;
+    height: 10%;
   }
   .full {
     background: #cf95fc;

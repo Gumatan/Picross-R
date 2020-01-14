@@ -11,7 +11,8 @@ const initialState = {
   gameStarted: false,
   tilesState:
     "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-  completedPuzzles: []
+  completedPuzzles: [],
+  pendingAnims: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -43,12 +44,19 @@ const reducer = (state = initialState, action) => {
         tilesState: initialState.tilesState
       };
     case "COMPLETED_PUZZLE":
-      const { completedPuzzles } = state;
-      completedPuzzles.push(state.currentPuzzleData.id);
+      const newPendingAnims = [...state.pendingAnims];
+      newPendingAnims.push(state.currentPuzzleData.id);
       return {
         ...state,
-        completedPuzzles
+        pendingAnims: newPendingAnims
       };
+    case "PLAYED_ANIM":
+      return {
+        ...state,
+        completedPuzzles: [...state.completedPuzzles, action.id],
+        pendingAnims: [...state.pendingAnims].filter(e => e !== action.id)
+      };
+
     default:
       return state;
   }

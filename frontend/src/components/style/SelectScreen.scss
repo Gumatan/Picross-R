@@ -4,6 +4,7 @@
   flex-flow: row wrap;
   justify-content: space-evenly;
   .Card {
+    margin: 0 2%;
     width: 21%;
     max-width: 200px;
     margin-top: 3%;
@@ -16,10 +17,17 @@
       margin-bottom: 3px;
       color: white;
     }
-    .puzzlePreview img {
+    .puzzlePreview {
       width: 100%;
-      border: 2px solid rgb(105, 105, 105);
+      height: 82%;
+      background: white;
+      border: 2px solid #4d4d4d;
       border-radius: 5px;
+      background: white;
+      padding: 1px;
+      img {
+        width: 100%;
+      }
     }
     p {
       margin-left: 2px;
