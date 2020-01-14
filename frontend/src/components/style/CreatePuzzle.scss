@@ -5,14 +5,83 @@ $TileSize: 24px;
   display: flex;
   flex-flow: row wrap;
   position: relative;
-  width: $TileSize * 14 +4;
-  height: $TileSize * 14 +4;
+  width: $TileSize * 14+4;
+  height: $TileSize * 14+4;
   margin-left: 20%;
   margin-top: 5%;
   background-color: #dddadae8;
   border: 2px solid rgb(105, 105, 105);
   border-radius: 5px;
   font-family: "Orbitron", sans-serif;
+  .NewPuzzleInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 2px;
+    height: $TileSize * 4;
+    width: $TileSize * 4;
+    input {
+      font-family: "Work Sans";
+      width: 100%;
+      border: solid white 1px;
+      border-radius: 3px;
+      padding: 0.3em;
+    }
+    button {
+      font-family: "Work Sans";
+      text-align: center;
+      text-decoration: none;
+      border: solid white 1px;
+      border-radius: 3px;
+      width: 100%;
+      padding: 0.3em 0.8em;
+      color: #ffffff;
+      background-color: #cf95fc;
+    }
+  }
+  .TopHints {
+    display: flex;
+    flex-flow: row wrap;
+    width: $TileSize * 10;
+    height: $TileSize * 4;
+    margin: 0 auto;
+    & > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: $TileSize * 4;
+      width: $TileSize;
+      & > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: $TileSize;
+        width: $TileSize;
+      }
+    }
+  }
+  .LeftHints {
+    display: flex;
+    flex-flow: column;
+    width: $TileSize * 4;
+    height: $TileSize * 10;
+    margin: auto 0;
+    & > div {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      height: $TileSize;
+      width: $TileSize * 4;
+      & > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: $TileSize;
+        width: $TileSize;
+      }
+    }
+  }
   .TileField {
     width: $TileSize * 10 +4;
     height: $TileSize * 10+4;

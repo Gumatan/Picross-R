@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 const TopHints = ({ solutionString, gameHeight, gameWidth }) => {
   const [topHints, topHintsUpdate] = useState(null);
-  console.log(solutionString, gameHeight, gameWidth);
 
   const determineHints = () => {
     let hints = new Array(gameWidth)
@@ -36,13 +35,12 @@ const TopHints = ({ solutionString, gameHeight, gameWidth }) => {
       }
     }
     hints = hints.map(item => item.filter(values => values !== 0)); //removing 0's in hints
-    console.log(hints);
     topHintsUpdate(hints);
   };
 
   useEffect(() => {
     determineHints();
-  }, []);
+  }, [solutionString]);
 
   return (
     <div className="TopHints">

@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import "./style/Game.scss";
+import axios from "axios";
+import "./style/CreatePuzzle.scss";
+import LeftHints from "./Game/LeftHints";
 import Tile from "./Game/Tile";
+import TopHints from "./Game/TopHints";
 
 const CreatePuzzle = () => {
   const dispatch = useDispatch();
-  const currentPuzzleData = useSelector(state => state.currentPuzzleData);
+  const tilesState = useSelector(state => state.tilesState);
+  const [puzzleName, puzzleNameUpdate] = useState("");
+  const [creator, creatorUpdate] = useState("");
+  const [posted, postedUpdate] = useState(false);
+  const [puzzleCreated, puzzleCreatedUpdate] = useState(false);
   const [dragStartStatus, dragStartStatusUpdate] = useState("0");
 
   const handleFirstStatusChange = firstChange => {
@@ -18,21 +26,66 @@ const CreatePuzzle = () => {
 
   useEffect(() => {
     return () => {
-      dispatch({ type: "RESET_TILES_STATUS" });
+      dispatch({ type: "RESET_GAME" });
     };
   }, []);
+
+  const post = () => {
+    postedUpdate(true);
+
+    const data = {
+      name: puzzleName,
+      creator: creator,
+      height: 10,
+      width: 10,
+      solutionString: tilesState
+    };
+
+    axios.post("http://localhost:5000/puzzles", data).then(
+      response => {
+        console.log(response);
+        puzzleCreatedUpdate(true);
+      },
+      error => {
+        console.log(error);
+        console.log(data);
+      }
+    );
+  };
 
   const map = Array.prototype.map;
 
   return (
     <div className="CreatePuzzle">
+      {puzzleCreated && <Redirect to="/" />}
+      <div className="NewPuzzleInfo">
+        <input
+          placeholder="Puzzle name"
+          value={puzzleName}
+          onChange={e => {
+            puzzleNameUpdate(e.target.value);
+          }}
+          type="text"
+        />
+        <input
+          placeholder="Creator"
+          value={creator}
+          onChange={e => {
+            creatorUpdate(e.target.value);
+          }}
+          type="text"
+        />
+        <button onClick={!posted && post}>POST</button>
+      </div>
+      <TopHints gameHeight={10} gameWidth={10} solutionString={tilesState} />
+      <LeftHints gameHeight={10} gameWidth={10} solutionString={tilesState} />
       <div
         className="TileField"
         onContextMenu={preventDefault}
         onDragStart={preventDefault}
         onDrop={preventDefault}
       >
-        {map.call(new Array(100), (e, i) => (
+        {map.call([...new Array(100)], (e, i) => (
           <Tile
             key={i}
             id={i}

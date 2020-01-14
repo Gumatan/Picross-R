@@ -8,6 +8,9 @@
   src: url("/WorkSans-Medium.ttf");
   font-weight: bold;
 }
+
+@import url("https://fonts.googleapis.com/css?family=Orbitron&display=swap");
+
 html {
   background: #602b7e;
   -webkit-background-size: cover;

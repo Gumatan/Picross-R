@@ -9,8 +9,9 @@ import TopHints from "./TopHints";
 const Game = () => {
   const dispatch = useDispatch();
   const currentPuzzleData = useSelector(state => state.currentPuzzleData);
+  const gameStarted = useSelector(state => state.gameStarted);
   const [dragStartStatus, dragStartStatusUpdate] = useState("0");
-  const { solutionString, name, height, width } = currentPuzzleData;
+  let { solutionString, name, height, width } = currentPuzzleData;
   const gameHeight = height;
   const gameWidth = width;
 
@@ -23,11 +24,13 @@ const Game = () => {
 
   useEffect(() => {
     return () => {
-      dispatch({ type: "RESET_TILES_STATUS" });
+      dispatch({ type: "RESET_GAME" });
     };
   }, []);
 
   const map = Array.prototype.map;
+
+  if (!gameStarted || !solutionString) solutionString = "";
 
   return (
     <div
@@ -36,19 +39,22 @@ const Game = () => {
       onDragStart={preventDefault}
       onDrop={preventDefault}
     >
-      <GameInfo name={name} />
+      <GameInfo name={name} solutionString={solutionString} />
+
       <TopHints
         gameHeight={gameHeight}
         gameWidth={gameWidth}
         solutionString={solutionString}
       />
+
       <LeftHints
         gameHeight={gameHeight}
         gameWidth={gameWidth}
         solutionString={solutionString}
       />
+
       <div className="TileField">
-        {solutionString &&
+        {solutionString ? (
           map.call(solutionString, (e, i) => (
             <Tile
               key={i}
@@ -56,7 +62,10 @@ const Game = () => {
               sendFirstStatusChange={handleFirstStatusChange}
               dragStartStatus={dragStartStatus}
             />
-          ))}
+          ))
+        ) : (
+          <img src="/questionMark-static.jpg" alt="" />
+        )}
       </div>
     </div>
   );

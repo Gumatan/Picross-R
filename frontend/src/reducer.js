@@ -8,8 +8,10 @@ const initialState = {
     solutionString:
       "0000111000000101000000010100000010001000001001100001111101000110111100111111111110001000101001010010"
   },
+  gameStarted: false,
   tilesState:
-    "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+  completedPuzzles: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -18,6 +20,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         currentPuzzleData: action.puzzleData
+      };
+    case "START_GAME":
+      return {
+        ...state,
+        gameStarted: true
       };
     case "UPDATE_TILE":
       let { tilesState } = state;
@@ -29,10 +36,18 @@ const reducer = (state = initialState, action) => {
         ...state,
         tilesState
       };
-    case "RESET_TILES_STATUS":
+    case "RESET_GAME":
       return {
         ...state,
+        gameStarted: false,
         tilesState: initialState.tilesState
+      };
+    case "COMPLETED_PUZZLE":
+      const { completedPuzzles } = state;
+      completedPuzzles.push(state.currentPuzzleData.id);
+      return {
+        ...state,
+        completedPuzzles
       };
     default:
       return state;

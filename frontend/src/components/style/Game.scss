@@ -1,7 +1,5 @@
 $TileSize: 24px;
 
-@import url("https://fonts.googleapis.com/css?family=Orbitron&display=swap");
-
 .Game {
   box-sizing: content-box;
   display: flex;
@@ -69,6 +67,14 @@ $TileSize: 24px;
         width: $TileSize;
       }
     }
+  }
+  img {
+    width: $TileSize * 10;
+    height: $TileSize * 10;
+    border: 2px solid grey;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
   }
   .TileField {
     width: $TileSize * 10 +4;

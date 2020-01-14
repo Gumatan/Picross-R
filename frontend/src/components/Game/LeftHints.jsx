@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 const LeftHints = ({ solutionString, gameHeight, gameWidth }) => {
   const [leftHints, leftHintsUpdate] = useState(null);
-
   const determineHints = () => {
     let hints = new Array(gameWidth)
       .fill(0)
@@ -38,7 +37,7 @@ const LeftHints = ({ solutionString, gameHeight, gameWidth }) => {
 
   useEffect(() => {
     determineHints();
-  }, []);
+  }, [solutionString]);
 
   return (
     <div className="LeftHints">

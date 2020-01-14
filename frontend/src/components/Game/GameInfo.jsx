@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const GameInfo = ({ name, solutionString }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const tilesState = useSelector(state => state.tilesState);
-  const [time, updateTime] = useState(null);
-  const [gameStarted, gameStartedUpdate] = useState(false);
+  const gameStarted = useSelector(state => state.gameStarted);
+  const [time, updateTime] = useState("");
   let startDate;
   let getTime;
 
   const startGame = () => {
+    dispatch({ type: "START_GAME" });
     startDate = Date.now();
     getTime = setInterval(() => {
       const time = Date.now() - startDate;
@@ -23,20 +27,14 @@ const GameInfo = ({ name, solutionString }) => {
         sec
       });
     }, 1000);
-    gameStartedUpdate(true);
   };
 
   const attempt = () => {
     if (solutionString === tilesState) {
-      alert(
-        `Félicitation tu as complété ${name} en ${time.min} minutes et ${time.sec} secondes !!`
-      );
-      console.log(
-        `Félicitation tu as complété ${name} en ${time.min} minutes et ${time.sec} secondes !!`
-      );
+      dispatch({ type: "COMPLETED_PUZZLE" });
+      history.push("/");
     } else {
       alert("oppsie :(");
-      console.log("oppsie :(");
     }
   };
 
