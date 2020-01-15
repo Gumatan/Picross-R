@@ -1,8 +1,12 @@
 const express = require("express");
 const app = express();
-const { backendPort, bdd } = require("./conf");
+const {
+  CONFIG: { backendPort },
+  bdd
+} = require("./conf");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const passport = require("passport");
 
 app.use(
   bodyParser.urlencoded({
@@ -11,6 +15,9 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(cors());
+app.use(passport.initialize());
+
+app.use("/auth", require("./auth"));
 
 app.get("/puzzles", (req, res) => {
   bdd.query("select * from puzzle", (err, results) => {
