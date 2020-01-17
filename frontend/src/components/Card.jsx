@@ -19,7 +19,7 @@ const Card = ({ puzzleData }) => {
       }, 3000);
     }
   }, [completedPuzzles]);
-
+  const completed = completedPuzzles.includes(id);
   return (
     <div
       className="Card"
@@ -28,12 +28,12 @@ const Card = ({ puzzleData }) => {
       }}
     >
       <Link to={`/game/${id}`}>
-        <h3>{name}</h3>
+        <h3>{completed ? name : "???"}</h3>
         <div className="puzzlePreview">
           {playAnim ? (
             <img src="/questionMark.gif" alt="" />
-          ) : completedPuzzles.includes(id) ? (
-            <Preview solutionString={solutionString} />
+          ) : completed ? (
+            <Preview id={id} solutionString={solutionString} />
           ) : (
             <img src="/questionMark-static.jpg" alt="" />
           )}

@@ -1,3 +1,4 @@
+@import "./variable.scss";
 .Preview {
   box-sizing: border-box;
   height: 100%;
@@ -10,7 +11,7 @@
     height: 10%;
   }
   .full {
-    background: #cf95fc;
+    background: $tertiaryColor;
   }
   .empty {
     background: white;

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams, useHistory } from "react-router-dom";
 import "../style/Game.scss";
 import GameInfo from "./GameInfo";
 import LeftHints from "./LeftHints";
 import Tile from "./Tile";
 import TopHints from "./TopHints";
+import Axios from "axios";
 
 const Game = () => {
+  const history = useHistory();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const currentPuzzleData = useSelector(state => state.currentPuzzleData);
   const gameStarted = useSelector(state => state.gameStarted);
@@ -23,6 +27,16 @@ const Game = () => {
   };
 
   useEffect(() => {
+    if (currentPuzzleData.id === -1)
+      Axios.get(`http://localhost:5000/puzzles?id=${id}`)
+        .then(res => {
+          if (res.data[0])
+            dispatch({ type: "SELECT_PUZZLE", puzzleData: res.data[0] });
+          else history.push("/");
+        })
+        .catch(err => {
+          console.log(err);
+        });
     return () => {
       dispatch({ type: "RESET_GAME" });
     };
@@ -39,7 +53,11 @@ const Game = () => {
       onDragStart={preventDefault}
       onDrop={preventDefault}
     >
-      <GameInfo name={name} solutionString={solutionString} />
+      <GameInfo
+        id={currentPuzzleData.id}
+        name={name}
+        solutionString={solutionString}
+      />
 
       <TopHints
         gameHeight={gameHeight}

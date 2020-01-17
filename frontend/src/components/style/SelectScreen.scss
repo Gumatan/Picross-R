@@ -1,3 +1,4 @@
+@import "./variable.scss";
 .SelectScreen {
   box-sizing: content-box;
   display: flex;
@@ -5,13 +6,17 @@
   justify-content: space-evenly;
   .Card {
     margin: 0 2%;
-    width: 21%;
+    width: 200px;
+    height: 240px;
     max-width: 200px;
     margin-top: 3%;
     padding: 5px;
-    border: 1px solid #cf95fc;
+    border: 1px solid $tertiaryColor;
     border-radius: 3px;
-    background: #8452ae;
+    background: $secondaryColor;
+    &:last-of-type {
+      margin-bottom: 3vh;
+    }
     h3 {
       margin-left: 2px;
       margin-bottom: 3px;

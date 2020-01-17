@@ -16,18 +16,29 @@ app.use(
 app.use(bodyParser.json());
 app.use(cors());
 app.use(passport.initialize());
+require("./passport-strategies.js");
 
 app.use("/auth", require("./auth"));
 
 app.get("/puzzles", (req, res) => {
-  bdd.query("select * from puzzle", (err, results) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send(err);
-    } else {
-      res.status(200).json(results);
-    }
-  });
+  const id = req.query.id;
+  id
+    ? bdd.query("select * from puzzle where id=?", [id], (err, results) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send(err);
+        } else {
+          res.status(200).json(results);
+        }
+      })
+    : bdd.query("select * from puzzle", (err, results) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send(err);
+        } else {
+          res.status(200).json(results);
+        }
+      });
 });
 
 app.post("/puzzles", (req, res) => {
@@ -40,6 +51,29 @@ app.post("/puzzles", (req, res) => {
     }
   });
 });
+
+app.put(
+  "/savedata",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    console.log(req.body);
+    bdd.query(
+      "UPDATE user SET saveData=? WHERE username=?",
+      [req.body.saveData, req.user.username],
+      err => {
+        if (err) {
+          console.log(err);
+
+          res.status(500).send(err);
+        } else {
+          res
+            .status(200)
+            .send("Succesfully updated saveData of " + req.user.username);
+        }
+      }
+    );
+  }
+);
 
 app.listen(backendPort, err => {
   if (err) {

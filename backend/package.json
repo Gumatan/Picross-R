@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "eject": "node RESET-SCRIPT.js"
+    "start": "nodemon index.js"
   },
   "author": "Gumatan",
   "license": "ISC",

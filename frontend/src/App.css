@@ -11,12 +11,10 @@
 
 @import url("https://fonts.googleapis.com/css?family=Orbitron&display=swap");
 
-html {
+.App {
+  min-height: 100vh;
+  height: fit-content;
   background: #602b7e;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
   font-family: "Work Sans";
   font-weight: normal;
   font-size: 1em;

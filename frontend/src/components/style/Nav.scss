@@ -1,9 +1,10 @@
+@import "./variable.scss";
 nav {
   display: flex;
   align-items: center;
   position: sticky;
   height: 80px;
-  background-color: #753ea4;
+  background-color: $secondaryColor;
   a {
     display: flex;
     align-items: center;
@@ -25,20 +26,25 @@ nav {
     }
   }
   .rightSide {
+    align-items: center;
     margin-left: auto;
     margin-right: 22px;
     display: flex;
     flex-flow: row nowrap;
+    p {
+      color: azure;
+    }
     button,
     a {
+      cursor: pointer;
       margin-left: 15px;
       text-align: center;
       text-decoration: none;
       border: solid white 1px;
       border-radius: 3px;
       padding: 0.5em 1em;
-      color: #ffffff;
-      background-color: #cf95fc;
+      color: white;
+      background-color: $tertiaryColor;
     }
   }
 }

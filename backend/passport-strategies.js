@@ -4,7 +4,7 @@ const { Strategy: JWTStrategy, ExtractJwt } = require("passport-jwt");
 const bcrypt = require("bcrypt");
 const {
   CONFIG: { jwtSecret },
-  db
+  bdd
 } = require("./conf");
 
 passport.use(
@@ -14,8 +14,8 @@ passport.use(
       passwordField: "password"
     },
     (formPseudo, formPassword, done) => {
-      db.query(
-        "SELECT username, password FROM user WHERE username=?",
+      bdd.query(
+        "SELECT username, password, creator FROM user WHERE username=?",
         [formPseudo],
         (err, results) => {
           if (err) {
@@ -23,9 +23,8 @@ passport.use(
             return done(err);
           }
           let user;
-          if (results && results[0])
-            user = JSON.parse(JSON.stringify(results[0]));
-          if (!user || !user.pseudo)
+          if (results && results[0]) user = { ...results[0] };
+          if (!user || !user.username)
             return done(null, false, { message: "User not found!" });
           bcrypt.compare(formPassword, user.password, (errBcrypt, result) => {
             if (errBcrypt) return done(errBcrypt);
@@ -49,7 +48,7 @@ passport.use(
     },
     (jwtPayload, done) => {
       const user = jwtPayload;
-      // find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
+      // find the user in bdd if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
       return done(null, user);
     }
   )

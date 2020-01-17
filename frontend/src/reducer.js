@@ -1,18 +1,22 @@
 const initialState = {
   currentPuzzleData: {
-    id: 1,
-    name: "Saucisson",
-    creator: "Gum",
+    id: -1,
+    name: "Loading",
+    creator: "...",
     height: 10,
     width: 10,
     solutionString:
-      "0000111000000101000000010100000010001000001001100001111101000110111100111111111110001000101001010010"
+      "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
   },
   gameStarted: false,
   tilesState:
     "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
   completedPuzzles: [],
-  pendingAnims: []
+  pendingAnims: [],
+  showConnectModal: false,
+  showRegisterModal: false,
+  user: { username: undefined, saveData: undefined, creator: undefined },
+  jwt: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -28,14 +32,13 @@ const reducer = (state = initialState, action) => {
         gameStarted: true
       };
     case "UPDATE_TILE":
-      let { tilesState } = state;
-      tilesState =
-        tilesState.substr(0, action.id) +
+      const newtilesState =
+        state.tilesState.substr(0, action.id) +
         action.newStatus +
-        tilesState.substr(action.id + 1);
+        state.tilesState.substr(action.id + 1);
       return {
         ...state,
-        tilesState
+        tilesState: newtilesState
       };
     case "RESET_GAME":
       return {
@@ -44,6 +47,8 @@ const reducer = (state = initialState, action) => {
         tilesState: initialState.tilesState
       };
     case "COMPLETED_PUZZLE":
+      if (state.completedPuzzles.includes(state.currentPuzzleData.id))
+        return state;
       const newPendingAnims = [...state.pendingAnims];
       newPendingAnims.push(state.currentPuzzleData.id);
       return {
@@ -56,7 +61,35 @@ const reducer = (state = initialState, action) => {
         completedPuzzles: [...state.completedPuzzles, action.id],
         pendingAnims: [...state.pendingAnims].filter(e => e !== action.id)
       };
-
+    case "TOGGLE_CONNECT_MODAL":
+      return {
+        ...state,
+        showConnectModal: !state.showConnectModal
+      };
+    case "TOGGLE_REGISTER_MODAL":
+      return {
+        ...state,
+        showRegisterModal: !state.showRegisterModal
+      };
+    case "SAVE_USER_DATA":
+      const saveData = JSON.parse(action.value.user.saveData);
+      return {
+        ...state,
+        user: {
+          username: action.value.user.username,
+          creator: action.value.user.creator ? true : false,
+          saveData
+        },
+        jwt: action.value.token,
+        completedPuzzles: saveData
+      };
+    case "DISCONNECT":
+      return {
+        ...state,
+        user: initialState.user,
+        jwt: initialState.jwt,
+        completedPuzzles: initialState.completedPuzzles
+      };
     default:
       return state;
   }

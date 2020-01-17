@@ -1,10 +1,9 @@
-$TileSize: 24px;
+@import "./variable.scss";
 
 .CreatePuzzle {
   box-sizing: content-box;
   display: flex;
   flex-flow: row wrap;
-  position: relative;
   width: $TileSize * 14+4;
   height: $TileSize * 14+4;
   margin-left: 20%;
@@ -37,7 +36,7 @@ $TileSize: 24px;
       width: 100%;
       padding: 0.3em 0.8em;
       color: #ffffff;
-      background-color: #cf95fc;
+      background-color: $tertiaryColor;
     }
   }
   .TopHints {
@@ -96,7 +95,6 @@ $TileSize: 24px;
       width: $TileSize;
       height: $TileSize;
       background-color: aliceblue;
-      position: relative;
       border: 2px solid grey;
       padding: 0px;
       border-radius: 5px;

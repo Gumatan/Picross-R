@@ -43,12 +43,10 @@ const CreatePuzzle = () => {
 
     axios.post("http://localhost:5000/puzzles", data).then(
       response => {
-        console.log(response);
         puzzleCreatedUpdate(true);
       },
       error => {
         console.log(error);
-        console.log(data);
       }
     );
   };
@@ -60,7 +58,7 @@ const CreatePuzzle = () => {
       {puzzleCreated && <Redirect to="/" />}
       <div className="NewPuzzleInfo">
         <input
-          placeholder="Puzzle name"
+          placeholder="Nom du puzzle"
           value={puzzleName}
           onChange={e => {
             puzzleNameUpdate(e.target.value);
@@ -68,14 +66,14 @@ const CreatePuzzle = () => {
           type="text"
         />
         <input
-          placeholder="Creator"
+          placeholder="Createur"
           value={creator}
           onChange={e => {
             creatorUpdate(e.target.value);
           }}
           type="text"
         />
-        <button onClick={!posted && post}>POST</button>
+        <button onClick={!posted && post}>POSTE !</button>
       </div>
       <TopHints gameHeight={10} gameWidth={10} solutionString={tilesState} />
       <LeftHints gameHeight={10} gameWidth={10} solutionString={tilesState} />
