@@ -1,0 +1,41 @@
+footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  height: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background-color: black;
+  color: white;
+  .leftSide {
+    margin: 4px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .rightSide {
+    margin: 4px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    color: white;
+  }
+  img {
+    height: 15px;
+  }
+}
+
+// @media screen and (max-width: 527px) {
+//   footer {
+//     height: 50px;
+//     img {
+//       height: 30%;
+//     }
+//   }
+// }

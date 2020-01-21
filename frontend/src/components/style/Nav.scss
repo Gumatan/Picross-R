@@ -1,0 +1,50 @@
+@import "./variable.scss";
+nav {
+  display: flex;
+  align-items: center;
+  position: sticky;
+  height: 80px;
+  background-color: $secondaryColor;
+  a {
+    display: flex;
+    align-items: center;
+    .logo {
+      height: 70px;
+      margin-left: 7px;
+      border-radius: 200px 200px 200px 200px;
+    }
+    h1 {
+      font-weight: bold;
+      font-size: 1.5em;
+      justify-self: flex-start;
+      margin-left: 10px;
+      color: white;
+    }
+    .reactLogo {
+      height: 17px;
+      margin-left: 3px;
+    }
+  }
+  .rightSide {
+    align-items: center;
+    margin-left: auto;
+    margin-right: 22px;
+    display: flex;
+    flex-flow: row nowrap;
+    p {
+      color: azure;
+    }
+    button,
+    a {
+      cursor: pointer;
+      margin-left: 15px;
+      text-align: center;
+      text-decoration: none;
+      border: solid white 1px;
+      border-radius: 3px;
+      padding: 0.5em 1em;
+      color: white;
+      background-color: $tertiaryColor;
+    }
+  }
+}

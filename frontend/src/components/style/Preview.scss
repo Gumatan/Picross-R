@@ -1,0 +1,19 @@
+@import "./variable.scss";
+.Preview {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  border-radius: 5px;
+  div {
+    width: 10%;
+    height: 10%;
+  }
+  .full {
+    background: $tertiaryColor;
+  }
+  .empty {
+    background: white;
+  }
+}

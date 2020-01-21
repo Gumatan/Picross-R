@@ -1,0 +1,21 @@
+@font-face {
+  font-family: "Work Sans";
+  src: url("/WorkSans-Regular.ttf");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Work Sans";
+  src: url("/WorkSans-Medium.ttf");
+  font-weight: bold;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Orbitron&display=swap");
+
+.App {
+  min-height: 100vh;
+  height: fit-content;
+  background: #602b7e;
+  font-family: "Work Sans";
+  font-weight: normal;
+  font-size: 1em;
+}

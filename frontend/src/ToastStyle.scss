@@ -1,0 +1,9 @@
+@import "./components/style/variable.scss";
+
+.Toastify__toast {
+  color: white;
+  background: $secondaryColor;
+  .Toastify__progress-bar {
+    background: $tertiaryColor;
+  }
+}
