@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
 import "./style/ConnectModal.scss";
+const { backendAddress } = require("../conf");
 
 const ConnectModal = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const ConnectModal = () => {
   const [credentialsState, credentialsStateUpdate] = useState(true);
 
   const handleSubmit = () => {
-    axios.post("http://localhost:5000/auth/login", { username, password }).then(
+    axios.post(backendAddress + "/auth/login", { username, password }).then(
       response => {
         localStorage.setItem("token", response.data.token);
         dispatch({ type: "SAVE_USER_DATA", value: response.data });

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "./style/RegisterModal.scss";
+const { backendAddress } = require("../conf");
 
 const RegisterModal = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const RegisterModal = () => {
     if (password.length >= 4) {
       if (password === confirmPassword) {
         axios
-          .post("http://localhost:5000/auth/signup", { username, password })
+          .post(backendAddress + "/auth/signup", { username, password })
           .then(response => {
             localStorage.setItem("token", response.data.token);
             dispatch({ type: "SAVE_USER_DATA", value: response.data });

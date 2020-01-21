@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+const { backendAddress } = require("../../conf");
 
 const GameInfo = ({ id, name, solutionString }) => {
   const history = useHistory();
@@ -12,7 +13,7 @@ const GameInfo = ({ id, name, solutionString }) => {
   const jwt = useSelector(state => state.jwt);
   const completedPuzzles = useSelector(state => state.completedPuzzles);
 
-  const [time, updateTime] = useState({ min: undefined, sec: undefined });
+  const [time, updateTime] = useState({ min: "00", sec: "00" });
   let startDate;
   let getTime;
 
@@ -41,7 +42,7 @@ const GameInfo = ({ id, name, solutionString }) => {
           saveData: JSON.stringify([...completedPuzzles, id])
         };
         axios
-          .put("http://localhost:5000/savedata", body)
+          .put(backendAddress + "/savedata", body)
           .then(res => {})
           .catch(err => {
             console.log(err);
