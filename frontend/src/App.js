@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./ToastStyle.scss";
 import Footer from "./components/Footer";
 import Axios from "axios";
+const { backendAddress } = require("./conf");
 
 const App = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const App = () => {
       const config = {
         headers: { Authorization: "Bearer " + localStorageToken }
       };
-      Axios.get("http://localhost:5000/auth/authenticateViaJWT", config)
+      Axios.get(backendAddress + "/auth/authenticateViaJWT", config)
         .then(response => {
           const data = {
             user: {

@@ -6,6 +6,7 @@ import "./style/CreatePuzzle.scss";
 import LeftHints from "./Game/LeftHints";
 import Tile from "./Game/Tile";
 import TopHints from "./Game/TopHints";
+const { backendAddress } = require("../conf");
 
 const CreatePuzzle = () => {
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const CreatePuzzle = () => {
       solutionString: tilesState
     };
 
-    axios.post("http://localhost:5000/puzzles", data).then(
+    axios.post(backendAddress + "/puzzles", data).then(
       response => {
         puzzleCreatedUpdate(true);
       },
