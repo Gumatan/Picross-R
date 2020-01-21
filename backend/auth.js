@@ -46,7 +46,6 @@ router.post("/login", (req, res) => {
   passport.authenticate("local", { session: false }, (err, user, info) => {
     if (err || !user) {
       // User not logged in (inexistant or tech error)
-      console.log(user, err, info);
       return res.status(401).json({
         message: "Failed auth!",
         user,

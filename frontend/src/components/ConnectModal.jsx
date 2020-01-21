@@ -15,7 +15,6 @@ const ConnectModal = () => {
     axios.post("http://localhost:5000/auth/login", { username, password }).then(
       response => {
         localStorage.setItem("token", response.data.token);
-        console.log(response.data);
         dispatch({ type: "SAVE_USER_DATA", value: response.data });
         dispatch({ type: "TOGGLE_CONNECT_MODAL" });
         toast("Welcome " + username + " :)");

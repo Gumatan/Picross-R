@@ -40,8 +40,6 @@ const GameInfo = ({ id, name, solutionString }) => {
         const body = {
           saveData: JSON.stringify([...completedPuzzles, id])
         };
-        console.log(body);
-
         axios
           .put("http://localhost:5000/savedata", body)
           .then(res => {})

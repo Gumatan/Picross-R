@@ -56,7 +56,6 @@ app.put(
   "/savedata",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    console.log(req.body);
     bdd.query(
       "UPDATE user SET saveData=? WHERE username=?",
       [req.body.saveData, req.user.username],
