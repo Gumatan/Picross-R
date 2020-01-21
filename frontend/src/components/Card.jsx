@@ -38,7 +38,7 @@ const Card = ({ puzzleData }) => {
             <img src="/questionMark-static.jpg" alt="" />
           )}
         </div>
-        <p>Createur : {creator}</p>
+        <p>Creator : {creator}</p>
       </Link>
     </div>
   );

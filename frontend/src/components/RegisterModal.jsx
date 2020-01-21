@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import { toast } from "react-toastify";
 import "./style/RegisterModal.scss";
 
 const RegisterModal = () => {
@@ -11,21 +12,27 @@ const RegisterModal = () => {
   const [confirmPassword, confirmPasswordUpdate] = useState("");
   const [passwordsAreSame, passwordsAreSameUpdate] = useState(true);
   const [usernameTaken, usernameTakenUpdate] = useState(false);
+  const [passwordIsLongEnough, passwordIsLongEnoughUpdate] = useState(true);
 
   const handleSubmit = () => {
-    if (password === confirmPassword) {
-      axios
-        .post("http://localhost:5000/auth/signup", { username, password })
-        .then(response => {
-          localStorage.setItem("token", response.data.token);
-          dispatch({ type: "SAVE_USER_DATA", value: response.data });
-          dispatch({ type: "TOGGLE_REGISTER_MODAL" });
-        })
-        .catch(err => {
-          usernameTakenUpdate(true);
-        });
+    if (password.length >= 4) {
+      if (password === confirmPassword) {
+        axios
+          .post("http://localhost:5000/auth/signup", { username, password })
+          .then(response => {
+            localStorage.setItem("token", response.data.token);
+            dispatch({ type: "SAVE_USER_DATA", value: response.data });
+            dispatch({ type: "TOGGLE_REGISTER_MODAL" });
+            toast("Welcome " + username + " :)");
+          })
+          .catch(err => {
+            usernameTakenUpdate(true);
+          });
+      } else {
+        passwordsAreSameUpdate(false);
+      }
     } else {
-      passwordsAreSameUpdate(false);
+      passwordIsLongEnoughUpdate(false);
     }
   };
 
@@ -38,8 +45,8 @@ const RegisterModal = () => {
             dispatch({ type: "TOGGLE_REGISTER_MODAL" });
           }}
         ></div>
-        <div className="modal">
-          <h3>Identifiant</h3>
+        <form onSubmit={e => e.preventDefault()} className="modal">
+          <h3>Username :</h3>
           <input
             className={usernameTaken ? "wrong" : undefined}
             type="text"
@@ -49,7 +56,13 @@ const RegisterModal = () => {
               usernameTakenUpdate(false);
             }}
           />
-          <h3>Mot de passe</h3>
+          {usernameTaken && (
+            <p>
+              This username is already taken,
+              <br /> sorry.
+            </p>
+          )}
+          <h3>Password :</h3>
           <input
             className={!passwordsAreSame ? "wrong" : undefined}
             type="password"
@@ -57,9 +70,10 @@ const RegisterModal = () => {
             onChange={e => {
               passwordUpdate(e.target.value);
               passwordsAreSameUpdate(true);
+              passwordIsLongEnoughUpdate(true);
             }}
           />
-          <h3>Confirmez le mot de passe</h3>
+          <h3>Confirm password :</h3>
           <input
             className={!passwordsAreSame ? "wrong" : undefined}
             type="password"
@@ -67,17 +81,25 @@ const RegisterModal = () => {
             onChange={e => {
               confirmPasswordUpdate(e.target.value);
               passwordsAreSameUpdate(true);
+              passwordIsLongEnoughUpdate(true);
             }}
           />
           {!passwordsAreSame && (
-            <p className="wrong">
-              les mots de passe ne sont pas identiques, veuillez réesayer
+            <p>
+              Passwords are not identical,
+              <br /> please retry.
+            </p>
+          )}
+          {!passwordIsLongEnough && (
+            <p>
+              Password needs to be at least,
+              <br />4 characters long.
             </p>
           )}
           <button type="submit" onClick={handleSubmit}>
-            S'inscrire
+            Create Account
           </button>
-        </div>
+        </form>
       </div>
     )
   );

@@ -26,9 +26,19 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    .wrong {
-      color: rgb(255, 100, 73);
-      border-color: rgb(255, 100, 73);
+    h3 {
+      align-self: flex-start;
+    }
+    input {
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: solid $secondaryColor 1px;
+      border-radius: 3px;
+      padding: 0.5em;
+      &.wrong {
+        color: rgb(255, 100, 73);
+        border-color: rgb(255, 100, 73);
+      }
     }
     button {
       cursor: pointer;
@@ -39,7 +49,11 @@
       border-radius: 3px;
       padding: 0.5em 1em;
       color: white;
-      background-color: $tertiaryColor;
+      background-color: $secondaryColor;
+    }
+    p {
+      color: rgb(114, 17, 0);
+      margin-bottom: 15px;
     }
   }
 }

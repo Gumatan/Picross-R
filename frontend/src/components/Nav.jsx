@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import ConnectModal from "./ConnectModal";
 import RegisterModal from "./RegisterModal";
 import "./style/Nav.scss";
@@ -17,15 +18,16 @@ const Nav = () => {
       </Link>
       {user.username ? (
         <div className="rightSide">
-          <p>Bienvenue {user.username}</p>
+          <p>Signed in as {user.username}</p>
           {user.creator && <Link to="/create">Ajouter un Puzzle</Link>}
           <button
             onClick={() => {
               localStorage.removeItem("token");
               dispatch({ type: "DISCONNECT" });
+              toast("Succesfully logged out, bye " + user.username);
             }}
           >
-            Deconnection
+            Disconnect
           </button>
         </div>
       ) : (
@@ -35,14 +37,14 @@ const Nav = () => {
               dispatch({ type: "TOGGLE_REGISTER_MODAL" });
             }}
           >
-            Inscription
+            Register
           </button>
           <button
             onClick={() => {
               dispatch({ type: "TOGGLE_CONNECT_MODAL" });
             }}
           >
-            Connection
+            Connect
           </button>
           <RegisterModal />
           <ConnectModal />

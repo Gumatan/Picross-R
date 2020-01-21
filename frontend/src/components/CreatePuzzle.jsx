@@ -58,7 +58,7 @@ const CreatePuzzle = () => {
       {puzzleCreated && <Redirect to="/" />}
       <div className="NewPuzzleInfo">
         <input
-          placeholder="Nom du puzzle"
+          placeholder="Puzzle name"
           value={puzzleName}
           onChange={e => {
             puzzleNameUpdate(e.target.value);

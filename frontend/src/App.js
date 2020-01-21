@@ -3,9 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 import Nav from "./components/Nav";
 import MainPage from "./components/MainPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./ToastStyle.scss";
+import Footer from "./components/Footer";
 import Axios from "axios";
 
-function App() {
+const App = () => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.jwt);
   useEffect(() => {
@@ -40,8 +44,14 @@ function App() {
     <div className="App">
       <Nav />
       <MainPage />
+      <ToastContainer
+        autoClose={5000}
+        draggable={false}
+        position="bottom-left"
+      />
+      <Footer />
     </div>
   );
-}
+};
 
 export default App;

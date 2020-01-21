@@ -71,6 +71,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         showRegisterModal: !state.showRegisterModal
       };
+    case "SWITCH_MODAL":
+      return {
+        ...state,
+        showConnectModal: !state.showConnectModal,
+        showRegisterModal: !state.showRegisterModal
+      };
     case "SAVE_USER_DATA":
       const saveData = JSON.parse(action.value.user.saveData);
       return {

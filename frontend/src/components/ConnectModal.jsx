@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import axios from "axios";
 import "./style/ConnectModal.scss";
 
@@ -17,6 +18,7 @@ const ConnectModal = () => {
         console.log(response.data);
         dispatch({ type: "SAVE_USER_DATA", value: response.data });
         dispatch({ type: "TOGGLE_CONNECT_MODAL" });
+        toast("Welcome " + username + " :)");
       },
       err => {
         credentialsStateUpdate(false);
@@ -33,8 +35,8 @@ const ConnectModal = () => {
             dispatch({ type: "TOGGLE_CONNECT_MODAL" });
           }}
         ></div>
-        <div className="modal">
-          <h3>Identifiant</h3>
+        <form onSubmit={e => e.preventDefault()} className="modal">
+          <h3>Username :</h3>
           <input
             type="text"
             value={username}
@@ -44,7 +46,7 @@ const ConnectModal = () => {
             }}
             className={!credentialsState ? "wrong" : undefined}
           />
-          <h3>Mot de passe</h3>
+          <h3>Password :</h3>
           <input
             type="password"
             value={password}
@@ -54,11 +56,24 @@ const ConnectModal = () => {
             }}
             className={!credentialsState ? "wrong" : undefined}
           />
+          {!credentialsState && (
+            <p>
+              Your credentials seems false,
+              <br />
+              Please retry.
+            </p>
+          )}
           <button type="submit" onClick={handleSubmit}>
-            Se connecter
+            Connect
           </button>
-          <h3>Vous n'avez pas de compte ?</h3>
-        </div>
+          <h3
+            onClick={() => {
+              dispatch({ type: "SWITCH_MODAL" });
+            }}
+          >
+            You don't own an account yet ?
+          </h3>
+        </form>
       </div>
     )
   );

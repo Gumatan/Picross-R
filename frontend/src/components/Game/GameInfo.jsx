@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 const GameInfo = ({ id, name, solutionString }) => {
@@ -11,7 +12,7 @@ const GameInfo = ({ id, name, solutionString }) => {
   const jwt = useSelector(state => state.jwt);
   const completedPuzzles = useSelector(state => state.completedPuzzles);
 
-  const [time, updateTime] = useState("");
+  const [time, updateTime] = useState({ min: undefined, sec: undefined });
   let startDate;
   let getTime;
 
@@ -50,6 +51,14 @@ const GameInfo = ({ id, name, solutionString }) => {
       }
       dispatch({ type: "COMPLETED_PUZZLE" });
       history.push("/");
+      toast(
+        "You completed " +
+          name +
+          " in " +
+          (time.min !== "00" ? time.min + " min and " : "") +
+          time.sec +
+          " sec"
+      );
     } else {
       alert("oppsie :(");
     }
@@ -63,7 +72,6 @@ const GameInfo = ({ id, name, solutionString }) => {
 
   return (
     <div className="GameInfo">
-      <p>{name}</p>
       <p>{gameStarted && time ? `${time.min} : ${time.sec}` : "00 : 00"}</p>
       <button onClick={gameStarted ? attempt : startGame}>
         {gameStarted ? "Attempt" : "Start !"}
