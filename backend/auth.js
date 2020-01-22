@@ -27,8 +27,10 @@ router.post("/signup", (req, res) => {
               return res.status(400).send("Invalid User creation request");
             }
             newUser.password = undefined;
+            const saveData = newUser.saveData;
+            newUser.saveData = undefined;
             return res.status(201).send({
-              user: { ...newUser, saveData: "[]" },
+              user: { ...newUser, saveData },
               token: jwt.sign(JSON.stringify(newUser), jwtSecret)
             });
           });
@@ -71,9 +73,32 @@ router.post("/login", (req, res) => {
             console.log(err);
             res.status(500).send(err);
           } else {
-            user.saveData = results[0].saveData;
-            const token = jwt.sign(user, jwtSecret);
-            return res.status(200).json({ user, token });
+            if (req.body.saveData !== []) {
+              user.saveData = JSON.stringify(
+                req.body.saveData.concat(
+                  JSON.parse(results[0].saveData).filter(
+                    item => req.body.saveData.indexOf(item) < 0
+                  )
+                )
+              );
+              bdd.query(
+                "UPDATE user SET saveData=? WHERE username=?",
+                [user.saveData, user.username],
+                (err, results) => {
+                  if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                  } else {
+                    const token = jwt.sign(user, jwtSecret);
+                    return res.status(200).json({ user, token });
+                  }
+                }
+              );
+            } else {
+              user.saveData = results[0].saveData;
+              const token = jwt.sign(user, jwtSecret);
+              return res.status(200).json({ user, token });
+            }
           }
         }
       );

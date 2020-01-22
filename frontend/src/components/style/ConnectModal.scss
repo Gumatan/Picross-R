@@ -1,5 +1,6 @@
 @import "./variable.scss";
 .ConnectModal {
+  z-index: 1200;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,7 +19,7 @@
   }
   .modal {
     position: absolute;
-    z-index: 2;
+    z-index: 1201;
     padding: 20px;
     background: $tertiaryColor;
     border: 2px solid #4d4d4d;

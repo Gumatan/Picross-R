@@ -7,6 +7,7 @@ const { backendAddress } = require("../conf");
 
 const RegisterModal = () => {
   const dispatch = useDispatch();
+  const saveData = useSelector(state => JSON.stringify(state.completedPuzzles));
   const showRegisterModal = useSelector(state => state.showRegisterModal);
   const [username, usernameUpdate] = useState("");
   const [password, passwordUpdate] = useState("");
@@ -19,7 +20,11 @@ const RegisterModal = () => {
     if (password.length >= 4) {
       if (password === confirmPassword) {
         axios
-          .post(backendAddress + "/auth/signup", { username, password })
+          .post(backendAddress + "/auth/signup", {
+            username,
+            password,
+            saveData
+          })
           .then(response => {
             localStorage.setItem("token", response.data.token);
             dispatch({ type: "SAVE_USER_DATA", value: response.data });
@@ -56,6 +61,7 @@ const RegisterModal = () => {
               usernameUpdate(e.target.value);
               usernameTakenUpdate(false);
             }}
+            autoFocus
           />
           {usernameTaken && (
             <p>

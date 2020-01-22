@@ -7,23 +7,26 @@ const { backendAddress } = require("../conf");
 
 const ConnectModal = () => {
   const dispatch = useDispatch();
+  const saveData = useSelector(state => state.completedPuzzles);
   const showConnectModal = useSelector(state => state.showConnectModal);
   const [username, usernameUpdate] = useState("");
   const [password, passwordUpdate] = useState("");
   const [credentialsState, credentialsStateUpdate] = useState(true);
 
   const handleSubmit = () => {
-    axios.post(backendAddress + "/auth/login", { username, password }).then(
-      response => {
-        localStorage.setItem("token", response.data.token);
-        dispatch({ type: "SAVE_USER_DATA", value: response.data });
-        dispatch({ type: "TOGGLE_CONNECT_MODAL" });
-        toast("Welcome " + username + " :)");
-      },
-      err => {
-        credentialsStateUpdate(false);
-      }
-    );
+    axios
+      .post(backendAddress + "/auth/login", { username, password, saveData })
+      .then(
+        response => {
+          localStorage.setItem("token", response.data.token);
+          dispatch({ type: "SAVE_USER_DATA", value: response.data });
+          dispatch({ type: "TOGGLE_CONNECT_MODAL" });
+          toast("Welcome " + username + " :)");
+        },
+        err => {
+          credentialsStateUpdate(false);
+        }
+      );
   };
 
   return (
@@ -45,6 +48,7 @@ const ConnectModal = () => {
               usernameUpdate(e.target.value);
             }}
             className={!credentialsState ? "wrong" : undefined}
+            autoFocus
           />
           <h3>Password :</h3>
           <input
