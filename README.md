@@ -7,11 +7,14 @@ A react port of my first web project Picross !
 made using create react app, redux, react-toastify for notifications, and sass.
 
 ### Backend :
-made using express, passport-local and passport-jwt for authentification, bcrypt for password encryption
-and mysql for database comunication.
+made using [express](https://github.com/expressjs/express), [passport-local](https://github.com/jaredhanson/passport-local) and [passport-jwt](https://github.com/mikenicholson/passport-jwt) for authentification, [bcrypt](https://www.npmjs.com/package/bcrypt) for password encryption
+and [mysql](https://www.npmjs.com/package/mysql) for database comunication.
 
-#### Prodution :
-Everything was put into production using [dokku](https://github.com/dokku/dokku).
+### Database :
+mysql using [dokku-mysql](https://github.com/dokku/dokku-mysql)
+
+### Prodution :
+Everything was put into production using [dokku](https://github.com/dokku/dokku). on an OVH VPS.
 
 ### Functionalities :
 Current website functionalities: 
