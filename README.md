@@ -18,9 +18,9 @@ Everything was put into production using [dokku](https://github.com/dokku/dokku)
 
 ### Functionalities :
 Current website functionalities: 
--Complete puzzles and save your progression via creating an account and retrieving it upon re-connection.
--Stay connected upon closing and reopening the browser.
--Create and make avalaible for everyone your own puzzles if you possess the creator status! 
--Automaticaly merge your progression if you completed puzzles without beeing connected or having an account by connecting or creating an account afterwards, even if you already had a progression on your account. 
+* Complete puzzles and save your progression via creating an account and retrieving it upon re-connection.
+* Stay connected upon closing and reopening the browser.
+* Create and make avalaible for everyone your own puzzles if you possess the creator status! 
+* Automaticaly merge your progression if you completed puzzles without beeing connected or having an account by connecting or creating an account afterwards, even if you already had a progression on your account. 
 
 ##  [Link : https://picross-r.com](https://picross-r.com)
