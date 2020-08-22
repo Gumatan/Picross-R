@@ -7,6 +7,7 @@ import LeftHints from "./LeftHints";
 import Tile from "./Tile";
 import TopHints from "./TopHints";
 import Axios from "axios";
+const { backendAddress } = require("../../conf");
 
 const Game = () => {
   const history = useHistory();
@@ -28,7 +29,7 @@ const Game = () => {
 
   useEffect(() => {
     if (currentPuzzleData.id === -1)
-      Axios.get(`http://localhost:5000/puzzles?id=${id}`)
+      Axios.get(`${backendAddress}/puzzles?id=${id}`)
         .then(res => {
           if (res.data[0])
             dispatch({ type: "SELECT_PUZZLE", puzzleData: res.data[0] });

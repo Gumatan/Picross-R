@@ -24,7 +24,7 @@ const Footer = () => {
         <p>by :&nbsp;</p>
         <a
           className="github-link"
-          href="https://github.com/Gumatan"
+          href="https://github.com/Gumatan/Picross-R"
           target="blank"
         >
           Gumatan&nbsp;
