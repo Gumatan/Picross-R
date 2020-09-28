@@ -11,27 +11,34 @@ passport.use(
   new LocalStrategy(
     {
       usernameField: "username",
-      passwordField: "password"
+      passwordField: "password",
     },
-    (formPseudo, formPassword, done) => {
+    (formUsername, formPassword, done) => {
       bdd.query(
-        "SELECT username, password, creator FROM user WHERE username=?",
-        [formPseudo],
+        "SELECT username, password, creator, saveData FROM user WHERE username=?",
+        [formUsername],
         (err, results) => {
           if (err) {
-            console.log(err);
-            return done(err);
+            return done(err, false, {
+              message: "Sql error!"
+            });
           }
           let user;
-          if (results && results[0]) user = { ...results[0] };
+          if (results && results[0]) {
+            user = { ...results[0] };
+            user.saveData = JSON.parse(user.saveData);
+          };
           if (!user || !user.username)
-            return done(null, false, { message: "User not found!" });
+            return done(null, false);
           bcrypt.compare(formPassword, user.password, (errBcrypt, result) => {
-            if (errBcrypt) return done(errBcrypt);
+            if (errBcrypt) return done(errBcrypt, false, {
+              message: "Server error!"
+            });
             if (!result)
               return done(null, false, {
                 message: "Incorrect password!"
               });
+            user.password = undefined
             return done(null, user);
           });
         }
@@ -47,9 +54,19 @@ passport.use(
       secretOrKey: jwtSecret
     },
     (jwtPayload, done) => {
-      const user = jwtPayload;
-      // find the user in bdd if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
-      return done(null, user);
+      const loggedUser = jwtPayload;
+      bdd.query(
+        "SELECT saveData FROM user WHERE username=?",
+        [loggedUser.username],
+        (err, results) => {
+          if (err) {
+            return done(err, false, { message: "Sql error!" });
+          } else {
+            loggedUser.saveData = results[0].saveData
+            return done(null, loggedUser)
+          }
+        }
+      );
     }
   )
 );

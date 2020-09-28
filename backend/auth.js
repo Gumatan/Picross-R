@@ -18,12 +18,10 @@ router.post("/signup", (req, res) => {
       [newUser.username],
       (err, results) => {
         if (err) {
-          console.log(err);
           return res.status(500).send(err);
         } else if (!results.length) {
           bdd.query("INSERT INTO user SET ?", [newUser], (err, results) => {
             if (err) {
-              console.error("Failure! " + err);
               return res.status(400).send("Invalid User creation request");
             }
             newUser.password = undefined;
@@ -44,88 +42,42 @@ router.post("/signup", (req, res) => {
   });
 });
 
-router.post("/login", (req, res) => {
-  passport.authenticate("local", { session: false }, (err, user, info) => {
-    if (err || !user) {
-      // User not logged in (inexistant or tech error)
-      return res.status(401).json({
-        message: "Failed auth!",
-        user,
-        err,
-        info
-      });
-    }
-    req.login(user, { session: false }, loginErr => {
-      if (loginErr) {
-        // Failed (technically) to log the user in
-        return res.status(401).json({
-          message: "Couldn't log you in!",
-          user,
-          loginErr
-        });
-      }
-      user.password = undefined;
+router.post("/login",
+  passport.authenticate("local", { session: false }),
+  (req, res) => {
+    const loggedUser = req.user;
+    const token = jwt.sign({ username: loggedUser.username, creator: loggedUser.creator }, jwtSecret);
+    if (req.body.saveData !== []) {
+      const mergedSaveData = req.body.saveData.concat(loggedUser.saveData);
+      const reconciliatedSaveData = [...new Set(loggedUser.saveData)];
       bdd.query(
-        "SELECT saveData from user WHERE username=?",
-        [user.username],
+        "UPDATE user SET saveData=? WHERE username=?",
+        [JSON.stringify(reconciliatedSaveData), loggedUser.username],
         (err, results) => {
           if (err) {
-            console.log(err);
             res.status(500).send(err);
           } else {
-            if (req.body.saveData !== []) {
-              user.saveData = JSON.stringify(
-                req.body.saveData.concat(
-                  JSON.parse(results[0].saveData).filter(
-                    item => req.body.saveData.indexOf(item) < 0
-                  )
-                )
-              );
-              bdd.query(
-                "UPDATE user SET saveData=? WHERE username=?",
-                [user.saveData, user.username],
-                (err, results) => {
-                  if (err) {
-                    console.log(err);
-                    res.status(500).send(err);
-                  } else {
-                    const token = jwt.sign(user, jwtSecret);
-                    return res.status(200).json({ user, token });
-                  }
-                }
-              );
-            } else {
-              user.saveData = results[0].saveData;
-              const token = jwt.sign(user, jwtSecret);
-              return res.status(200).json({ user, token });
-            }
+            loggedUser.saveData = reconciliatedSaveData
+            return res.status(200).json({ user: loggedUser, token });
           }
         }
       );
-    });
-  })(req, res);
-});
+    } else {
+      return res.status(200).json({ user: loggedUser, token });
+    }
+  }
+);
 
 router.get(
   "/authenticateViaJWT",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    bdd.query(
-      "SELECT saveData from user WHERE username=?",
-      [req.user.username],
-      (err, results) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send(err);
-        } else {
-          res.status(200).json({
-            ...req.user,
-            saveData: results[0].saveData
-          });
-        }
-      }
+    let loggedUser = req.user
+    res.status(200).json(
+      loggedUser
     );
   }
 );
+
 
 module.exports = router;

@@ -24,21 +24,19 @@ app.get("/puzzles", (req, res) => {
   const id = req.query.id;
   id
     ? bdd.query("select * from puzzle where id=?", [id], (err, results) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send(err);
-        } else {
-          res.status(200).json(results);
-        }
-      })
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.status(200).json(results);
+      }
+    })
     : bdd.query("select * from puzzle", (err, results) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send(err);
-        } else {
-          res.status(200).json(results);
-        }
-      });
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.status(200).json(results);
+      }
+    });
 });
 
 app.post("/puzzles", (req, res) => {
@@ -58,11 +56,9 @@ app.put(
   (req, res) => {
     bdd.query(
       "UPDATE user SET saveData=? WHERE username=?",
-      [req.body.saveData, req.user.username],
+      [JSON.stringify(req.body.saveData), req.user.username],
       err => {
         if (err) {
-          console.log(err);
-
           res.status(500).send(err);
         } else {
           res

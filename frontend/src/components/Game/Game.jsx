@@ -83,8 +83,8 @@ const Game = () => {
             />
           ))
         ) : (
-          <img src="/questionMark-static.jpg" alt="" />
-        )}
+            <img src="/questionMark-static.jpg" alt="" />
+          )}
       </div>
     </div>
   );

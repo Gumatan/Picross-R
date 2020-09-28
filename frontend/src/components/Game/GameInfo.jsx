@@ -14,13 +14,13 @@ const GameInfo = ({ id, name, solutionString }) => {
   const completedPuzzles = useSelector(state => state.completedPuzzles);
 
   const [time, updateTime] = useState({ min: "00", sec: "00" });
-  let startDate;
-  let getTime;
+  let startDate = React.useRef(null);
+  let getTime = React.useRef(null);
 
   const startGame = () => {
-    startDate = Date.now();
-    getTime = setInterval(() => {
-      const time = Date.now() - startDate;
+    startDate.current = Date.now();
+    getTime.current = setInterval(() => {
+      const time = Date.now() - startDate.current;
       let min = Math.floor(time / 1000 / 60);
       let sec = Math.floor(time / 1000) % 60;
       min = min.toString();
@@ -39,11 +39,11 @@ const GameInfo = ({ id, name, solutionString }) => {
     if (solutionString === tilesState.replace(/2/g, "0")) {
       if (jwt !== null && !completedPuzzles.includes(id)) {
         const body = {
-          saveData: JSON.stringify([...completedPuzzles, id])
+          saveData: [...completedPuzzles, id]
         };
         axios
           .put(backendAddress + "/savedata", body)
-          .then(res => {})
+          .then(res => { })
           .catch(err => {
             console.log(err);
           });
@@ -52,11 +52,11 @@ const GameInfo = ({ id, name, solutionString }) => {
       history.push("/");
       toast(
         "You completed " +
-          name +
-          " in " +
-          (time.min !== "00" ? time.min + " min and " : "") +
-          time.sec +
-          " sec"
+        name +
+        " in " +
+        (time.min !== "00" ? time.min + " min and " : "") +
+        time.sec +
+        " sec"
       );
     } else {
       alert("oppsie :(");
@@ -65,7 +65,7 @@ const GameInfo = ({ id, name, solutionString }) => {
 
   useEffect(() => {
     return () => {
-      clearInterval(getTime);
+      clearInterval(getTime.current);
     };
   }, []);
 

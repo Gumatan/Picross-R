@@ -7,7 +7,7 @@ const { backendAddress } = require("../conf");
 
 const RegisterModal = () => {
   const dispatch = useDispatch();
-  const saveData = useSelector(state => JSON.stringify(state.completedPuzzles));
+  const saveData = useSelector(state => state.completedPuzzles);
   const showRegisterModal = useSelector(state => state.showRegisterModal);
   const [username, usernameUpdate] = useState("");
   const [password, passwordUpdate] = useState("");

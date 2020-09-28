@@ -78,7 +78,7 @@ const reducer = (state = initialState, action) => {
         showRegisterModal: !state.showRegisterModal
       };
     case "SAVE_USER_DATA":
-      const saveData = JSON.parse(action.value.user.saveData);
+      const saveData = action.value.user.saveData;
       return {
         ...state,
         user: {
