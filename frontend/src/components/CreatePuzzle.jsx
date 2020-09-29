@@ -10,6 +10,7 @@ const { backendAddress } = require("../conf");
 
 const CreatePuzzle = () => {
   const dispatch = useDispatch();
+
   const tilesState = useSelector(state => state.tilesState);
   const [puzzleName, puzzleNameUpdate] = useState("");
   const [creator, creatorUpdate] = useState("");
@@ -36,7 +37,7 @@ const CreatePuzzle = () => {
 
     const data = {
       name: puzzleName,
-      creator: creator,
+      creator: 2,
       height: 10,
       width: 10,
       solutionString: tilesState
@@ -84,7 +85,7 @@ const CreatePuzzle = () => {
         onDragStart={preventDefault}
         onDrop={preventDefault}
       >
-        {map.call([...new Array(100)], (e, i) => (
+        {map.call(new Array(100), (e, i) => (
           <Tile
             key={i}
             id={i}

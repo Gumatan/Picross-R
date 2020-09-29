@@ -19,8 +19,8 @@ router.post("/signup", (req, res) => {
       (err, results) => {
         if (err) {
           return res.status(500).send(err);
-        } else if (!results.length) {
-          bdd.query("INSERT INTO user SET ?", [newUser], (err, results) => {
+        } else if (results.length === 0) {
+          bdd.query("INSERT INTO user SET ?", [{ username: newUser.username, password: newUser.password, creator: 0 }], (err, results) => {
             if (err) {
               return res.status(400).send("Invalid User creation request");
             }
@@ -29,7 +29,7 @@ router.post("/signup", (req, res) => {
             newUser.saveData = undefined;
             return res.status(201).send({
               user: { ...newUser, saveData },
-              token: jwt.sign(JSON.stringify(newUser), jwtSecret)
+              token: jwt.sign(newUser, jwtSecret)
             });
           });
         } else {
@@ -46,22 +46,33 @@ router.post("/login",
   passport.authenticate("local", { session: false }),
   (req, res) => {
     const loggedUser = req.user;
-    const token = jwt.sign({ username: loggedUser.username, creator: loggedUser.creator }, jwtSecret);
+    const token = jwt.sign({ id: loggedUser.id, username: loggedUser.username, creator: loggedUser.creator }, jwtSecret);
     if (req.body.saveData !== []) {
       const mergedSaveData = req.body.saveData.concat(loggedUser.saveData);
-      const reconciliatedSaveData = [...new Set(loggedUser.saveData)];
-      bdd.query(
-        "UPDATE user SET saveData=? WHERE username=?",
-        [JSON.stringify(reconciliatedSaveData), loggedUser.username],
-        (err, results) => {
-          if (err) {
-            res.status(500).send(err);
-          } else {
-            loggedUser.saveData = reconciliatedSaveData
-            return res.status(200).json({ user: loggedUser, token });
+      const reconciliatedSaveData = [...new Set(mergedSaveData)];
+      loggedUser.saveData = reconciliatedSaveData;
+
+      const newlyCompletedPuzzles =
+        req.body.saveData
+          .filter(incomingId =>
+            !loggedUser.saveData.some(alreadySavedId =>
+              alreadySavedId == incomingId
+            )
+          );
+      if (newlyCompletedPuzzles.length > 0) {
+        bdd.query(
+          "INSERT INTO puzzle_user(user_id,puzzle_id) VALUES ?",
+          [newlyCompletedPuzzles.map(puzzleId => [loggedUser.id, puzzleId])],
+          (err, results) => {
+            if (err) {
+              res.status(500).send(err);
+            } else {
+              return res.status(200).json({ user: loggedUser, token });
+            }
           }
-        }
-      );
+        );
+      } else return res.status(200).json({ user: loggedUser, token });
+
     } else {
       return res.status(200).json({ user: loggedUser, token });
     }

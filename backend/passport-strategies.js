@@ -6,6 +6,7 @@ const {
   CONFIG: { jwtSecret },
   bdd
 } = require("./conf");
+const { JsonWebTokenError } = require("jsonwebtoken");
 
 passport.use(
   new LocalStrategy(
@@ -15,7 +16,7 @@ passport.use(
     },
     (formUsername, formPassword, done) => {
       bdd.query(
-        "SELECT username, password, creator, saveData FROM user WHERE username=?",
+        "SELECT u.id, u.username, u.password, u.creator, pu.puzzle_id FROM user u LEFT JOIN puzzle_user pu ON pu.user_id = u.id WHERE u.username=?",
         [formUsername],
         (err, results) => {
           if (err) {
@@ -25,8 +26,11 @@ passport.use(
           }
           let user;
           if (results && results[0]) {
-            user = { ...results[0] };
-            user.saveData = JSON.parse(user.saveData);
+            user = { id: results[0].id, username: results[0].username, password: results[0].password, creator: results[0].creator };
+            if (results[0].puzzle_id != null) {
+              user.saveData = results.map(e => e.puzzle_id);
+            } else user.saveData = []
+
           };
           if (!user || !user.username)
             return done(null, false);
@@ -56,13 +60,13 @@ passport.use(
     (jwtPayload, done) => {
       const loggedUser = jwtPayload;
       bdd.query(
-        "SELECT saveData FROM user WHERE username=?",
-        [loggedUser.username],
+        "SELECT pu.puzzle_id FROM puzzle_user pu WHERE pu.user_id=?",
+        [loggedUser.id],
         (err, results) => {
           if (err) {
             return done(err, false, { message: "Sql error!" });
           } else {
-            loggedUser.saveData = results[0].saveData
+            loggedUser.saveData = results.map(e => e.puzzle_id)
             return done(null, loggedUser)
           }
         }
