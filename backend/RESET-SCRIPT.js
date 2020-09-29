@@ -77,13 +77,13 @@ const saveDataValues = [
   ],
 ];
 
-bdd.query("TRUNCATE TABLE puzzle_user", err => {
+bdd.query("TRUNCATE TABLE user_completed_puzzle", err => {
   if (err) {
     console.warn(err);
   } else {
     console.log("Succesfully truncated save table");
     bdd.query(
-      "INSERT INTO puzzle_user (user_id,puzzle_id) VALUES ?",
+      "INSERT INTO user_completed_puzzle(user_id,puzzle_id) VALUES ?",
       [saveDataValues],
       function (err, result) {
         if (err) throw err;

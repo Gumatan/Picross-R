@@ -61,7 +61,7 @@ router.post("/login",
           );
       if (newlyCompletedPuzzles.length > 0) {
         bdd.query(
-          "INSERT INTO puzzle_user(user_id,puzzle_id) VALUES ?",
+          "INSERT INTO user_completed_puzzle(user_id,puzzle_id) VALUES ?",
           [newlyCompletedPuzzles.map(puzzleId => [loggedUser.id, puzzleId])],
           (err, results) => {
             if (err) {

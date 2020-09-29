@@ -16,7 +16,7 @@ passport.use(
     },
     (formUsername, formPassword, done) => {
       bdd.query(
-        "SELECT u.id, u.username, u.password, u.creator, pu.puzzle_id FROM user u LEFT JOIN puzzle_user pu ON pu.user_id = u.id WHERE u.username=?",
+        "SELECT u.id, u.username, u.password, u.creator, ucp.puzzle_id FROM user u LEFT JOIN user_completed_puzzle ucp ON ucp.user_id = u.id WHERE u.username=?",
         [formUsername],
         (err, results) => {
           if (err) {
@@ -60,7 +60,7 @@ passport.use(
     (jwtPayload, done) => {
       const loggedUser = jwtPayload;
       bdd.query(
-        "SELECT pu.puzzle_id FROM puzzle_user pu WHERE pu.user_id=?",
+        "SELECT ucp.puzzle_id FROM user_completed_puzzle ucp WHERE ucp.user_id=?",
         [loggedUser.id],
         (err, results) => {
           if (err) {
