@@ -23,6 +23,7 @@ const App = () => {
         .then(response => {
           const data = {
             user: {
+              id: response.data.id,
               username: response.data.username,
               creator: response.data.creator,
               saveData: response.data.saveData

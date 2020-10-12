@@ -15,7 +15,7 @@ const initialState = {
   pendingAnims: [],
   showConnectModal: false,
   showRegisterModal: false,
-  user: { username: undefined, saveData: undefined, creator: undefined },
+  user: { username: undefined, saveData: undefined, creator: undefined, id: undefined },
   jwt: null
 };
 
@@ -84,6 +84,7 @@ const reducer = (state = initialState, action) => {
         user: {
           username: action.value.user.username,
           creator: action.value.user.creator ? true : false,
+          id: action.value.user.id,
           saveData
         },
         jwt: action.value.token,

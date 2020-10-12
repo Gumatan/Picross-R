@@ -10,10 +10,9 @@ const { backendAddress } = require("../conf");
 
 const CreatePuzzle = () => {
   const dispatch = useDispatch();
-
+  const userId = useSelector(state => state.user.id);
   const tilesState = useSelector(state => state.tilesState);
   const [puzzleName, puzzleNameUpdate] = useState("");
-  const [creator, creatorUpdate] = useState("");
   const [posted, postedUpdate] = useState(false);
   const [puzzleCreated, puzzleCreatedUpdate] = useState(false);
   const [dragStartStatus, dragStartStatusUpdate] = useState("0");
@@ -37,7 +36,7 @@ const CreatePuzzle = () => {
 
     const data = {
       name: puzzleName,
-      creator: 2,
+      creator: userId,
       height: 10,
       width: 10,
       solutionString: tilesState
@@ -67,14 +66,7 @@ const CreatePuzzle = () => {
           }}
           type="text"
         />
-        <input
-          placeholder="Createur"
-          value={creator}
-          onChange={e => {
-            creatorUpdate(e.target.value);
-          }}
-          type="text"
-        />
+
         <button onClick={!posted && post}>POSTE !</button>
       </div>
       <TopHints gameHeight={10} gameWidth={10} solutionString={tilesState} />
@@ -85,9 +77,9 @@ const CreatePuzzle = () => {
         onDragStart={preventDefault}
         onDrop={preventDefault}
       >
-        {map.call(new Array(100), (e, i) => (
+        {[...new Array(100)].map((e, i) => (
           <Tile
-            key={i}
+            key={"createPuzzleTile" + i}
             id={i}
             sendFirstStatusChange={handleFirstStatusChange}
             dragStartStatus={dragStartStatus}
