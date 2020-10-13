@@ -50,7 +50,6 @@ router.post("/login",
     if (req.body.saveData !== []) {
       const mergedSaveData = req.body.saveData.concat(loggedUser.saveData);
       const reconciliatedSaveData = [...new Set(mergedSaveData)];
-      loggedUser.saveData = reconciliatedSaveData;
 
       const newlyCompletedPuzzles =
         req.body.saveData
@@ -59,6 +58,8 @@ router.post("/login",
               alreadySavedId == incomingId
             )
           );
+
+      loggedUser.saveData = reconciliatedSaveData;
       if (newlyCompletedPuzzles.length > 0) {
         bdd.query(
           "INSERT INTO user_completed_puzzle(user_id,puzzle_id) VALUES ?",
