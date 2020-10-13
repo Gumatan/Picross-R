@@ -21,16 +21,34 @@ router.post("/signup", (req, res) => {
           return res.status(500).send(err);
         } else if (results.length === 0) {
           bdd.query("INSERT INTO user SET ?", [{ username: newUser.username, password: newUser.password, creator: 0 }], (err, results) => {
+            newUser.password = undefined;
             if (err) {
               return res.status(400).send("Invalid User creation request");
             }
-            newUser.password = undefined;
-            const saveData = newUser.saveData;
+            newUser.id = results.insertId;
+            const saveData = [...newUser.saveData];
             newUser.saveData = undefined;
-            return res.status(201).send({
-              user: { ...newUser, saveData },
-              token: jwt.sign(newUser, jwtSecret)
-            });
+            if (saveData.length > 0) {
+              bdd.query(
+                "INSERT INTO user_completed_puzzle(user_id,puzzle_id) VALUES ?",
+                [saveData.map(puzzleId => [newUser.id, puzzleId])],
+                (err, results) => {
+                  if (err) {
+                    res.status(500).send(err);
+                  } else {
+                    return res.status(201).send({
+                      user: { ...newUser, saveData },
+                      token: jwt.sign(newUser, jwtSecret)
+                    });
+                  }
+                }
+              )
+            } else {
+              return res.status(201).send({
+                user: { ...newUser, saveData },
+                token: jwt.sign(newUser, jwtSecret)
+              })
+            };
           });
         } else {
           return res.status(401).json({
